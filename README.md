@@ -1,4 +1,5 @@
-# django-deprecate-fields
+# Django - Deprecate Field
+
 
 ## Contributing
 
@@ -7,4 +8,4 @@ your work on the `master` branch and target `master` in your pull request.
 
 ## License
 
-`django-add-default-value` is released under the [Apache 2.0 License](./LICENSE).
+`django-deprecate-field` is released under the [Apache 2.0 License](./LICENSE).
