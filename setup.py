@@ -19,17 +19,20 @@ from setuptools import setup, find_packages
 
 PROJECT_DIR = path.abspath(path.dirname(__file__))
 
-long_description = open('README.rst').read()
+long_description = open('README.md').read()
 
 install_requirements = [
+    'Django>=1.10,<2.1'
 ]
 
 setup(
     name='django-deprecate-fields',
     version='0.0.1',
 
-    description='This package allows deprecating model fields and allows removing them in a backwards compatible manner.',
+    description='This package allows deprecating model fields and allows '
+                'removing them in a backwards compatible manner.',
     long_description=long_description,
+    long_description_content_type='text/markdown',
     url='https://github.com/3YOURMIND/django-deprecate-fields',
     author='3YOURMIND GmbH',
     license='Apache License 2.0',
