@@ -12,4 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .deprecate_fields import *  # noqa
+from .deprecate_field import *  # noqa
