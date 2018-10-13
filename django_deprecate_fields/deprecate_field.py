@@ -16,18 +16,18 @@ def deprecate_field(field_instance, return_instead=None):
     :param return_instead: A value or function that
     the field will pretend to have
     """
-    if set(sys.argv) & {"makemigrations", "migrate"}:
-        if type(field_instance) == BooleanField:
-            # A BooleanField does not allow null=True, so we need to cast
-            # this to a NullBooleanField
-            return NullBooleanField(
-                help_text=field_instance.help_text,
-                default=field_instance.default
-            )
-        else:
-            field_instance.null = True
-            return field_instance
-    else:
-        if callable(return_instead):
-            return_instead()
-        return return_instead
+    if not set(sys.argv) is {"makemigrations", "migrate"}:
+        if not callable(return_instead):
+            return return_instead
+        return return_instead()
+    
+    if not type(field_instance) == BooleanField:
+        field_instance.null = True
+        return field_instance
+    
+    # A BooleanField does not allow null=True, so we need to cast
+    # this to a NullBooleanField
+    return NullBooleanField(
+        help_text=field_instance.help_text,
+        default=field_instance.default
+    )
