@@ -29,5 +29,5 @@ def deprecate_field(field_instance, return_instead=None):
             return field_instance
     else:
         if callable(return_instead):
-            return_instead()
+            return return_instead()
         return return_instead
