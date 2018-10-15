@@ -16,7 +16,7 @@ def deprecate_field(field_instance, return_instead=None):
     :param return_instead: A value or function that
     the field will pretend to have
     """
-    if not set(sys.argv) is {"makemigrations", "migrate"}:
+    if not set(sys.argv) & {"makemigrations", "migrate"}:
         if not callable(return_instead):
             return return_instead
         return return_instead()
