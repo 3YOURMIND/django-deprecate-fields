@@ -22,7 +22,7 @@ PROJECT_DIR = path.abspath(path.dirname(__file__))
 long_description = open('README.md').read()
 
 install_requirements = [
-    'Django>=1.10,<2.1'
+    'Django>=1.11'
 ]
 
 setup(
