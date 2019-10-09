@@ -27,7 +27,7 @@ install_requirements = [
 
 setup(
     name='django-deprecate-fields',
-    version='0.0.3',
+    version='0.0.4',
 
     description='This package allows deprecating model fields and allows '
                 'removing them in a backwards compatible manner.',
