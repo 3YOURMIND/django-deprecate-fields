@@ -50,7 +50,7 @@ def deprecate_field(field_instance, return_instead=None):
     :param return_instead: A value or function that
     the field will pretend to have
     """
-    if not set(sys.argv) & {"makemigrations", "migrate"}:
+    if not set(sys.argv) & {"makemigrations", "migrate", "showmigrations"}:
         return DeprecatedField(return_instead)
 
     if not type(field_instance) == BooleanField:
