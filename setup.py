@@ -22,12 +22,12 @@ PROJECT_DIR = path.abspath(path.dirname(__file__))
 long_description = open('README.md').read()
 
 install_requirements = [
-    'Django>=1.11'
+    'Django>=2.1'
 ]
 
 setup(
     name='django-deprecate-fields',
-    version='0.0.4',
+    version='0.1.0',
 
     description='This package allows deprecating model fields and allows '
                 'removing them in a backwards compatible manner.',
@@ -46,11 +46,10 @@ setup(
         'Intended Audience :: Developers',
         'Environment :: Web Environment',
         'Framework :: Django',
-        'Framework :: Django :: 1.10',
-        'Framework :: Django :: 1.11',
-        'Framework :: Django :: 2.0',
         'Framework :: Django :: 2.1',
         'Framework :: Django :: 2.2',
+        'Framework :: Django :: 3.0',
+        'Framework :: Django :: 3.1',
 
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
