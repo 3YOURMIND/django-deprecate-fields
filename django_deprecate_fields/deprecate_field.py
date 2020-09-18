@@ -53,13 +53,5 @@ def deprecate_field(field_instance, return_instead=None):
     if not set(sys.argv) & {"makemigrations", "migrate", "showmigrations"}:
         return DeprecatedField(return_instead)
 
-    if not type(field_instance) == BooleanField:
-        field_instance.null = True
-        return field_instance
-
-    # A BooleanField does not allow null=True, so we need to cast
-    # this to a NullBooleanField
-    return NullBooleanField(
-        help_text=field_instance.help_text,
-        default=field_instance.default
-    )
+    field_instance.null = True
+    return field_instance
