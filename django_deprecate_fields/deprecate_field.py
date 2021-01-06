@@ -1,7 +1,8 @@
+import logging
 import sys
 import warnings
 
-from django.db.models import BooleanField, NullBooleanField
+logger = logging.getLogger(__file__)
 
 
 class DeprecatedField(object):
@@ -20,20 +21,26 @@ class DeprecatedField(object):
         for k, v in type(obj).__dict__.items():
             if v is self:
                 return k
-        return '<unknown>'
+        return "<unknown>"
 
     def __get__(self, obj, type=None):
-        warnings.warn('accessing deprecated field %s.%s' % (
-                obj.__class__.__name__, self._get_name(obj)
-            ), DeprecationWarning, stacklevel=2)
+        msg = "accessing deprecated field %s.%s" % (
+            obj.__class__.__name__,
+            self._get_name(obj),
+        )
+        warnings.warn(msg, DeprecationWarning, stacklevel=2)
+        logger.warning(msg)
         if not callable(self.val):
             return self.val
         return self.val()
 
     def __set__(self, obj, val):
-        warnings.warn('writing to deprecated field %s.%s' % (
-                obj.__class__.__name__, self._get_name(obj)
-            ), DeprecationWarning, stacklevel=2)
+        msg = "writing to deprecated field %s.%s" % (
+            obj.__class__.__name__,
+            self._get_name(obj),
+        )
+        warnings.warn(msg, DeprecationWarning, stacklevel=2)
+        logger.warning(msg)
         self.val = val
 
 
