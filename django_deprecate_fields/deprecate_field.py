@@ -25,14 +25,15 @@ class DeprecatedField(object):
         )
         warnings.warn(msg, DeprecationWarning, stacklevel=2)
         logger.warning(msg)
-        
+
         val = self.val
-        
+
         if self.use_current and val is None:
             val = getattr(instance, self.field_name, None)
-        
+
         if not callable(val):
             return val
+
         return val()
 
     def __set__(self, obj, val):
@@ -56,7 +57,9 @@ def deprecate_field(field_instance, return_instead=None, use_current=False):
     For (1) and (3) you need to run ./manage.py makemigrations:
     :param field_instance: The field to deprecate
     :param return_instead: A value or function that
-    the field will pretend to have
+    the field will pretend to have.
+    :param use_current: A boolean to indicate whether to read the previous 
+    value of the field if return_instead=None.
     """
     if not set(sys.argv) & {"makemigrations", "migrate", "showmigrations"}:
         if return_instead is None and use_current:
