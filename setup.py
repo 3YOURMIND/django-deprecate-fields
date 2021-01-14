@@ -23,6 +23,14 @@ long_description = open("README.md").read()
 
 install_requirements = ["Django>=2.1"]
 
+extras_require = {
+    'development': ['pip-tools'],
+    'test': [
+        'tox',
+        'tox-gh-actions',
+    ],
+}
+
 setup(
     name="django-deprecate-fields",
     version="0.1.1",
@@ -35,23 +43,23 @@ setup(
     license="Apache License 2.0",
     packages=["django_deprecate_fields"],
     install_requires=install_requirements,
+    extras_require=extras_require,
     keywords="django migration deprecation database backward compatibility",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
         "Environment :: Web Environment",
         "Framework :: Django",
+        "Framework :: Django :: 2.0",
         "Framework :: Django :: 2.1",
         "Framework :: Django :: 2.2",
         "Framework :: Django :: 3.0",
         "Framework :: Django :: 3.1",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.4",
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
     ],
 )
