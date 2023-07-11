@@ -14,6 +14,7 @@ class DeprecatedField(object):
     def __init__(self, val):
         self.val = val
 
+
     def _get_name(self, obj):
         """
         Try to find this field's name in the model class
@@ -34,7 +35,10 @@ class DeprecatedField(object):
             return self
         if not callable(self.val):
             return self.val
-        return self.val()
+        # we pass the Model object instance to the callable in case the
+        # value of the deprecated field can be extrapolated from another
+        # field
+        return self.val(obj)
 
     def __set__(self, obj, val):
         msg = "writing to deprecated field %s.%s" % (
