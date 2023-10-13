@@ -30,6 +30,8 @@ class DeprecatedField(object):
         )
         warnings.warn(msg, DeprecationWarning, stacklevel=2)
         logger.warning(msg)
+        if obj is None:
+            return self
         if not callable(self.val):
             return self.val
         return self.val()
