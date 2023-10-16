@@ -2,7 +2,7 @@ import logging
 import sys
 import warnings
 
-logger = logging.getLogger(__file__)
+logger = logging.getLogger(__name__)
 
 
 class DeprecatedField(object):
