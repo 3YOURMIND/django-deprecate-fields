@@ -5,14 +5,19 @@ import warnings
 logger = logging.getLogger(__name__)
 
 
+class FieldDeprecatedError(Exception):
+    pass
+
+
 class DeprecatedField(object):
     """
     Descriptor class for deprecated fields. Do not use directly, use the
     deprecate_field function instead.
     """
 
-    def __init__(self, val):
+    def __init__(self, val, raise_on_access=False):
         self.val = val
+        self.raise_on_access = raise_on_access
 
     def _get_name(self, obj):
         """
@@ -28,6 +33,9 @@ class DeprecatedField(object):
             obj.__class__.__name__,
             self._get_name(obj),
         )
+        if self.raise_on_access:
+            raise FieldDeprecatedError(msg)
+
         warnings.warn(msg, DeprecationWarning, stacklevel=2)
         logger.warning(msg)
         if not callable(self.val):
@@ -39,12 +47,15 @@ class DeprecatedField(object):
             obj.__class__.__name__,
             self._get_name(obj),
         )
+        if self.raise_on_access:
+            raise FieldDeprecatedError(msg)
+
         warnings.warn(msg, DeprecationWarning, stacklevel=2)
         logger.warning(msg)
         self.val = val
 
 
-def deprecate_field(field_instance, return_instead=None):
+def deprecate_field(field_instance, return_instead=None, raise_on_access=False):
     """
     Can be used in models to delete a Field in a Backwards compatible manner.
     The process for deleting old model Fields is:
@@ -56,9 +67,10 @@ def deprecate_field(field_instance, return_instead=None):
     :param field_instance: The field to deprecate
     :param return_instead: A value or function that
     the field will pretend to have
+    :param raise_on_access: If true, raise FieldDeprecated instead of logging a warning
     """
     if not set(sys.argv) & {"makemigrations", "migrate", "showmigrations"}:
-        return DeprecatedField(return_instead)
+        return DeprecatedField(return_instead, raise_on_access=raise_on_access)
 
     field_instance.null = True
     return field_instance
