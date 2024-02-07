@@ -55,7 +55,7 @@ class DeprecatedField(object):
         self.val = val
 
 
-def deprecate_field(field_instance, return_instead=None, raise_on_access=False):
+def deprecate_field(field_instance, return_instead=None, raise_on_access=False, commands_requiring_concrete_class=None):
     """
     Can be used in models to delete a Field in a Backwards compatible manner.
     The process for deleting old model Fields is:
@@ -68,8 +68,13 @@ def deprecate_field(field_instance, return_instead=None, raise_on_access=False):
     :param return_instead: A value or function that
     the field will pretend to have
     :param raise_on_access: If true, raise FieldDeprecated instead of logging a warning
+    :param commands_requiring_concrete_class: A set of commands that need the actual field
     """
-    if not set(sys.argv) & {"makemigrations", "migrate", "showmigrations"}:
+    base_django_migration_commands = {"makemigrations", "migrate", "showmigrations"}
+    exhaustive_commands = base_django_migration_commands | (
+            commands_requiring_concrete_class or set()
+    )
+    if not set(sys.argv) & exhaustive_commands:
         return DeprecatedField(return_instead, raise_on_access=raise_on_access)
 
     field_instance.null = True

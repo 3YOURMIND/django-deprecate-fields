@@ -40,6 +40,17 @@ in your code will return `None` (or optionally any value or callable passed to `
 Lastly, after the changes above have been deployed, `field1` can then safely be removed in the model (plus another
 `makemigrations` run)
 
+### Custom django commands
+
+If you need the actual field to be returned when a django command other than `makemigrations`, `migrate` or `showmigrations` is run, you can use the
+`commands_requiring_concrete_class` parameter.
+
+For instance if you generate migrations with `pgmakemigrations` instead of `makemigrations`, you can create the field
+this way
+```python
+    deprecate_field(models.CharField(), commands_requiring_concrete_class={"pgmakemigrations"})
+```
+
 ## Contributing
 
 First of all, thank you very much for contributing to this project. Please base
