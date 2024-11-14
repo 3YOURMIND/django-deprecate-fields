@@ -69,7 +69,7 @@ def deprecate_field(field_instance, return_instead=None, raise_on_access=False):
     the field will pretend to have
     :param raise_on_access: If true, raise FieldDeprecated instead of logging a warning
     """
-    if not set(sys.argv) & {"makemigrations", "migrate", "showmigrations"}:
+    if not set(sys.argv) & {"makemigrations", "migrate", "pgmakemigrations", "showmigrations"}:
         return DeprecatedField(return_instead, raise_on_access=raise_on_access)
 
     field_instance.null = True
