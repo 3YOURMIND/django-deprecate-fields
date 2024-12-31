@@ -2,6 +2,8 @@ import logging
 import sys
 import warnings
 
+from django.conf import settings
+
 logger = logging.getLogger(__name__)
 
 
@@ -69,7 +71,11 @@ def deprecate_field(field_instance, return_instead=None, raise_on_access=False):
     the field will pretend to have
     :param raise_on_access: If true, raise FieldDeprecated instead of logging a warning
     """
-    if not set(sys.argv) & {"makemigrations", "migrate", "showmigrations"}:
+
+    base_migration_commands = {"makemigrations", "migrate", "showmigrations"}
+    custom_migration_commands = getattr(settings, "DEPRECATE_FIELD_CUSTOM_MIGRATION_COMMAND", set())
+
+    if not set(sys.argv) & base_migration_commands | custom_migration_commands:
         return DeprecatedField(return_instead, raise_on_access=raise_on_access)
 
     field_instance.null = True
