@@ -75,7 +75,7 @@ def deprecate_field(field_instance, return_instead=None, raise_on_access=False):
     base_migration_commands = {"makemigrations", "migrate", "showmigrations"}
     custom_migration_commands = getattr(settings, "DEPRECATE_FIELD_CUSTOM_MIGRATION_COMMAND", set())
 
-    if not set(sys.argv) & base_migration_commands | custom_migration_commands:
+    if not set(sys.argv) & (base_migration_commands | custom_migration_commands):
         return DeprecatedField(return_instead, raise_on_access=raise_on_access)
 
     field_instance.null = True
