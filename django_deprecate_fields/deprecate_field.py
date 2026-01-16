@@ -31,6 +31,10 @@ class DeprecatedField(object):
         return "<unknown>"
 
     def __get__(self, obj, type=None):
+        if obj is None:
+            # This is class-level access to the field, which is typical during object inspection
+            # and shouldn't cause a warning.
+            return self
         msg = "accessing deprecated field %s.%s" % (
             obj.__class__.__name__,
             self._get_name(obj),
