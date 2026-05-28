@@ -57,6 +57,28 @@ DEPRECATE_FIELD_CUSTOM_MIGRATION_COMMAND = {"pgmakemigrations"}
 First of all, thank you very much for contributing to this project. Please base
 your work on the `master` branch and target `master` in your pull request.
 
+### Running tests
+
+Install the package in editable mode and run the test suite:
+
+```
+pip install -e .
+./manage.py test tests --no-input
+```
+
+To test against a specific Python and Django version combination, use [tox](https://tox.wiki):
+
+```
+pip install tox
+tox -e py313-django60
+```
+
+To see a coverage report:
+
+```
+tox -e coverage
+```
+
 ## License
 
 `django-deprecate-fields` is released under the [Apache 2.0 License](./LICENSE).

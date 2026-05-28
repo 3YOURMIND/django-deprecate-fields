@@ -1,0 +1,36 @@
+name: CI Build
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  tests:
+    name: Python ${{ matrix.python-version }} / Django ${{ matrix.django-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {python-version: "3.11", django-version: "5.2", tox-env: py311-django52}
+          - {python-version: "3.12", django-version: "5.2", tox-env: py312-django52}
+          - {python-version: "3.13", django-version: "5.2", tox-env: py313-django52}
+          - {python-version: "3.12", django-version: "6.0", tox-env: py312-django60}
+          - {python-version: "3.13", django-version: "6.0", tox-env: py313-django60}
+          - {python-version: "3.14", django-version: "5.2", tox-env: py314-django52}
+          - {python-version: "3.14", django-version: "6.0", tox-env: py314-django60}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install tox
+        run: python -m pip install tox
+
+      - name: Run tests
+        run: python -m tox -e ${{ matrix.tox-env }}
