@@ -4,6 +4,7 @@ import unittest
 import warnings
 from unittest.mock import patch
 
+from django.db import models
 from django.test import override_settings
 
 from django_deprecate_fields import DeprecatedField, FieldDeprecatedError, deprecate_field
@@ -155,6 +156,27 @@ class TestDeprecateFieldFunction(unittest.TestCase):
             result = deprecate_field(_MockField(), raise_on_access=True)
         self.assertIsInstance(result, DeprecatedField)
         self.assertTrue(result.raise_on_access)
+
+    def test_migration_command_drops_foreign_key_constraint(self):
+        foreign_key = models.ForeignKey("tests.Parent", models.CASCADE)
+        one_to_one = models.OneToOneField("tests.Parent", models.CASCADE)
+        with patch("sys.argv", ["manage.py", "makemigrations"]):
+            deprecate_field(foreign_key)
+            deprecate_field(one_to_one)
+        self.assertFalse(foreign_key.db_constraint)
+        self.assertFalse(one_to_one.db_constraint)
+
+    def test_migration_command_drops_auto_created_many_to_many_constraints(self):
+        field = models.ManyToManyField("tests.Parent")
+        with patch("sys.argv", ["manage.py", "makemigrations"]):
+            deprecate_field(field)
+        self.assertFalse(field.remote_field.db_constraint)
+
+    def test_migration_command_keeps_explicit_through_constraints(self):
+        field = models.ManyToManyField("tests.Parent", through="tests.Membership")
+        with patch("sys.argv", ["manage.py", "makemigrations"]):
+            deprecate_field(field)
+        self.assertTrue(field.remote_field.db_constraint)
 
     @override_settings(DEPRECATE_FIELD_CUSTOM_MIGRATION_COMMAND={"pgmakemigrations"})
     def test_custom_command_returns_field(self):

@@ -3,6 +3,7 @@ import sys
 import warnings
 
 from django.conf import settings
+from django.db import models
 
 logger = logging.getLogger(__name__)
 
@@ -83,4 +84,8 @@ def deprecate_field(field_instance, return_instead=None, raise_on_access=False):
         return DeprecatedField(return_instead, raise_on_access=raise_on_access)
 
     field_instance.null = True
+    if isinstance(field_instance, models.ForeignKey):
+        field_instance.db_constraint = False
+    elif isinstance(field_instance, models.ManyToManyField) and field_instance.remote_field.through is None:
+        field_instance.remote_field.db_constraint = False
     return field_instance

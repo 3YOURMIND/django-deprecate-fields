@@ -36,6 +36,10 @@ Secondly, `makemigrations` should be called, which will change the field to be n
 in your code will return `None` (or optionally any value or callable passed to `deprecate_field` as the
 `return_instead` argument)
 
+On a `ForeignKey`, `OneToOneField` or `ManyToManyField` (without an explicit `through` model), `makemigrations`
+also drops the database foreign key constraints: once the field is deprecated, Django no longer applies its
+`on_delete`, so the constraint would otherwise make deleting a referenced row fail.
+
 Lastly, after the changes above have been deployed, `field1` can then safely be removed in the model (plus another
 `makemigrations` run)
 
